@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three JS Assignment</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <script type="module">
+        import * as THREE from './js/three.module.js';
+        
+        var scene = new THREE.Scene();
+
+        var projCam = new THREE.PerspectiveCamera(50,window.innerWidth/window.innerHeight,0.1,1000);
+        projCam.position.z = 86;
+        projCam.position.y = 48;
+        projCam.rotation.x = 12;
+        projCam.updateProjectionMatrix();
+
+        var renderer = new THREE.WebGLRenderer({antialias:true});
+        renderer.setClearColor("#0f1112");
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        window.addEventListener('resize',() => {
+            renderer.setSize(width,height);
+            camera.aspect = width/height;
+            camera.updateProjectionMatrix();
+        })
+        
+        var light = new THREE.PointLight(0xFFFFFF,1,500);
+        light.position.set(0,0,0);
+        scene.add(light);
+
+        var geo_Sun = new THREE.SphereGeometry(6, 8, 8);
+        var mat_Sun = new THREE.MeshBasicMaterial( { color: 0xFFCC00 } ); //TODO: Animated texture
+        var mesh_Sun = new THREE.Mesh(geo_Sun, mat_Sun);
+        scene.add(mesh_Sun);
+
+        var geo_Mercury = new THREE.SphereGeometry(0.66, 15, 15);
+        var mat_Mercury = new THREE.MeshStandardMaterial( { color: 0x694126 } );
+        var mesh_Mercury = new THREE.Mesh(geo_Mercury, mat_Mercury);
+        scene.add(mesh_Mercury);
+        mesh_Mercury.position.x += 9;
+        var pivot_Mercury = new THREE.Object3D();
+        scene.add(pivot_Mercury);
+        mesh_Mercury.parent = pivot_Mercury;
+
+        var geo_Venus = new THREE.SphereGeometry(1.15, 15, 15);
+        var mat_Venus = new THREE.MeshStandardMaterial( { color: 0xc7743d } );
+        var mesh_Venus = new THREE.Mesh(geo_Venus, mat_Venus);
+        scene.add(mesh_Venus);
+        mesh_Venus.position.x += 12.5;
+        var pivot_Venus = new THREE.Object3D();
+        scene.add(pivot_Venus);
+        mesh_Venus.parent = pivot_Venus;
+
+        var geo_Earth = new THREE.SphereGeometry(1.25, 15, 15);
+        var mat_Earth = new THREE.MeshStandardMaterial( { color: 0x2ebd75 } );
+        var mesh_Earth = new THREE.Mesh(geo_Earth, mat_Earth);
+
+        var geo_Moon = new THREE.SphereGeometry(0.4, 15, 15);
+        var mat_Moon = new THREE.MeshStandardMaterial( { color: 0x2b2d2e } );
+        var mesh_Moon = new THREE.Mesh(geo_Moon, mat_Moon);
+
+        scene.add(mesh_Earth);
+        scene.add(mesh_Moon);
+        mesh_Earth.position.x += 16.0;
+        mesh_Moon.position.x += 2.2;
+        var pivot_Earth = new THREE.Object3D();
+        scene.add(pivot_Earth);
+        mesh_Earth.parent = pivot_Earth;
+        mesh_Moon.parent = mesh_Earth;
+
+        var geo_Mars = new THREE.SphereGeometry(0.75, 15, 15);
+        var mat_Mars = new THREE.MeshStandardMaterial( { color: 0xe65342 } );
+        var mesh_Mars = new THREE.Mesh(geo_Mars, mat_Mars);
+        scene.add(mesh_Mars);
+        mesh_Mars.position.x += 19.0;
+        var pivot_Mars = new THREE.Object3D();
+        scene.add(pivot_Mars);
+        mesh_Mars.parent = pivot_Mars;
+
+        var geo_Jupiter = new THREE.SphereGeometry(3.5, 15, 15);
+        var mat_Jupiter = new THREE.MeshStandardMaterial( { color: 0xf2983d } );
+        var mesh_Jupiter = new THREE.Mesh(geo_Jupiter, mat_Jupiter);
+        scene.add(mesh_Jupiter);
+        mesh_Jupiter.position.x += 25.0;
+        var pivot_Jupiter = new THREE.Object3D();
+        scene.add(pivot_Jupiter);
+        mesh_Jupiter.parent = pivot_Jupiter;
+
+        var geo_Saturn = new THREE.SphereGeometry(2.0, 15, 15);
+        var mat_Saturn = new THREE.MeshStandardMaterial( { color: 0xf2ca8f } );
+        var mesh_Saturn = new THREE.Mesh(geo_Saturn, mat_Saturn);
+        scene.add(mesh_Saturn);
+        mesh_Saturn.position.x += 34.0;
+        //TODO: Rings
+        var pivot_Saturn = new THREE.Object3D();
+        scene.add(pivot_Saturn);
+        mesh_Saturn.parent = pivot_Saturn;
+
+        for(var i = 0; i < 3; i++)
+        {
+            var geo_Ring = new THREE.RingGeometry( i * 1.4 + 2.2, i * 1.4 + 2.8, 30 );
+            var mat_Ring = new THREE.MeshStandardMaterial( { color: 0xf2ca8f, side: THREE.DoubleSide } );
+            var mesh_Ring = new THREE.Mesh( geo_Ring, mat_Ring );
+            scene.add( mesh_Ring );
+            mesh_Ring.parent = mesh_Saturn;
+            mesh_Ring.rotation.x = 90;
+        }
+
+        var geo_Uranus = new THREE.SphereGeometry(2.0, 15, 15);
+        var mat_Uranus = new THREE.MeshStandardMaterial( { color: 0x8facc9 } );
+        var mesh_Uranus = new THREE.Mesh(geo_Uranus, mat_Uranus);
+        scene.add(mesh_Uranus);
+        mesh_Uranus.position.x += 42.0;
+        var pivot_Uranus = new THREE.Object3D();
+        scene.add(pivot_Uranus);
+        mesh_Uranus.parent = pivot_Uranus;
+
+        var geo_Neptune = new THREE.SphereGeometry(2.0, 15, 15);
+        var mat_Neptune = new THREE.MeshStandardMaterial( { color: 0x8facc9 } );
+        var mesh_Neptune = new THREE.Mesh(geo_Neptune, mat_Neptune);
+        scene.add(mesh_Neptune);
+        mesh_Neptune.position.x += 46.0;
+        var pivot_Neptune = new THREE.Object3D();
+        scene.add(pivot_Neptune);
+        mesh_Neptune.parent = pivot_Neptune;
+
+        renderer.render(scene, projCam);
+
+        function animate() {
+
+        mesh_Sun.rotation.x += 0.05;
+        mesh_Sun.rotation.y += 0.05;
+        mesh_Sun.rotation.z += 0.05;
+        //Above is what I think you meant by using animation to make the sun look wavy?
+        
+        mesh_Mercury.rotation.y += 0.05;
+        mesh_Venus.rotation.y += 0.045;
+        mesh_Earth.rotation.y += 0.04;
+        mesh_Moon.rotation.y += 0.04;
+        mesh_Mars.rotation.y += 0.035;
+        mesh_Jupiter.rotation.y += 0.03;
+        mesh_Saturn.rotation.y += 0.025;
+        mesh_Uranus.rotation.y += 0.02;
+        mesh_Neptune.rotation.y += 0.02;
+
+        pivot_Mercury.rotation.y += 0.05;
+        pivot_Venus.rotation.y += 0.045;
+        pivot_Earth.rotation.y += 0.04;
+        pivot_Mars.rotation.y += 0.03;
+        pivot_Jupiter.rotation.y += 0.025;
+        pivot_Saturn.rotation.y += 0.02;
+        pivot_Uranus.rotation.y += 0.015;
+        pivot_Neptune.rotation.y += 0.01;
+
+        requestAnimationFrame( animate );
+
+        renderer.render( scene, projCam );
+    }
+    animate();
+        </script>
+</body>
+</html>
